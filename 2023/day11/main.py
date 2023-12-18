@@ -21,23 +21,38 @@ for galaxy in galaxies:
 print(universe)
 
 # adjust the map
+n = 999999
 counter = 0
 for i, row in enumerate(universe):
     if 1. not in row:
-        counter +=1
-        universe = np.insert(universe, counter+i, 0, axis=0)
+        counter += n
+        universe = np.insert(universe, i, 0, axis=0)
+        new_galaxies = []
+        for galaxy in galaxies:
+            if galaxy[0] > (i+counter-n):
+                new_galaxies.append((galaxy[0]+n, galaxy[1]))
+            else:
+                new_galaxies.append(galaxy)
+        galaxies = new_galaxies
 counter = 0
 for j, column in enumerate(universe.T):
     if 1. not in column:
-        counter +=1
-        universe = np.insert(universe, counter+j, 0, axis=1)
+        counter += n
+        universe = np.insert(universe, j, 0, axis=1)
+        new_galaxies = []
+        for galaxy in galaxies:
+            if galaxy[1] > (j+counter-n):
+                new_galaxies.append((galaxy[0], galaxy[1]+n))
+            else:
+                new_galaxies.append(galaxy)
+        galaxies = new_galaxies
 
-#update galaxies    
-galaxies = []
-for i, row in enumerate(universe):
-    for j, char in enumerate(row):
-        if char==1.:
-            galaxies.append((i, j))
+# update galaxies    
+# galaxies = []
+# for i, row in enumerate(universe):
+#     for j, char in enumerate(row):
+#         if char==1.:
+#             galaxies.append((i, j))
 print(galaxies)
 print(universe)
 distances = defaultdict(lambda: float('inf'))
